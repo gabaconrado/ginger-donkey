@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "ginger-donkey"
+version = "0.1.0"
+description = "Counter type utility for Pokémon"
+authors = ["Gabriel Conrado <gabaconrado@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.3.5"
+pytest-mock = "^2.0.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[scripts]
+test = "poetry run pytest -vx"
