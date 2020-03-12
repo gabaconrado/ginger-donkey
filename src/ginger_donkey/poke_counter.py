@@ -2,7 +2,7 @@
 
 import sys
 
-from entity import PokemonType
+from src.ginger_donkey.entity import PokemonType
 
 
 def find_best_type_against(target_types):

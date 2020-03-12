@@ -2,13 +2,35 @@ import pytest
 
 from subprocess import run
 
+OUTPUTS = {
+    'electric': ('Pokemon Matchup (Electric):'
+                 '\tSuper effective (2.0x): Ground, Rock\n'
+                 '\tUltra effective (4.0x):\n'
+                 '\tNot effective   (0.5x):\n'
+                 '\tImmune          (0.0x):\n'),
+    'fairy dragon': ('Pokemon Matchup (Fairy, Dragon):'
+                     '\tSuper effective (2.0x): Ice, Dragon, Fairy, '
+                                               'Poison, Steel\n'
+                     '\tUltra effective (4.0x):\n'
+                     '\tNot effective   (0.5x):\n'
+                     '\tImmune          (0.0x):\n'),
+    'water': ('Pokemon Matchup (Water):'
+              '\tSuper effective (2.0x): Electric, Grass\n'
+              '\tUltra effective (4.0x):\n'
+              '\tNot effective   (0.5x):\n'
+              '\tImmune          (0.0x):\n'),
+    'dark': ('Pokemon Matchup (Dark):'
+             '\tSuper effective (2.0x): Fighting, Bug, Fairy\n'
+             '\tUltra effective (4.0x):\n'
+             '\tNot effective   (0.5x):\n'
+             '\tImmune          (0.0x):\n'),
+}
+
 @pytest.mark.parametrize(
     'type_input, expected',
     [
-        ('electric', b"[['ground']]"),
-        ('fairy dragon', b"[['ice', 'dragon', 'fairy'], ['poison', 'steel']]"),
-        ('water', b"[['electric', 'grass']]"),
-        ('dark', b"[['fighting', 'bug', 'fairy']]")
+        (_input, _output)
+        for _input, _output in OUTPUTS.items()
     ],
     ids = [
         'Electric',

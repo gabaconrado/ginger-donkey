@@ -43,6 +43,17 @@ def read_config_file_mock(mocker):
     yield read_m
 
 
+@pytest.fixture
+def pokemon_matchup_mock():
+    from src.ginger_donkey.entity import PokemonType, PokemonMatchup
+    p = PokemonMatchup([PokemonType('tipo', [])])
+    p.super_effectives = ['tipo1', 'tipo2']
+    p.ultra_effectives = ['tipo3']
+    p.not_effectives = ['tipo4']
+    p.immunes = ['tipo5']
+    yield p
+
+
 def test_entrypoint(
     sys_argv_mock,
     find_best_type_mock,
@@ -78,3 +89,26 @@ def test_setup_all_types(read_config_file_mock):
         PokemonType('water', ['electric', 'grass']),
         PokemonType('dragon', ['dragon', 'ice']),
     ]
+
+
+def test_build_matchup_output(pokemon_matchup_mock):
+    # given
+    expected_output = ('Pokemon Matchup (Tipo):\n'
+                       '\tSuper effective (2.0x): Tipo1, Tipo2\n'
+                       '\tUltra effective (4.0x): Tipo3\n'
+                       '\tNot effective   (0.5x): Tipo4\n'
+                       '\tImmune          (0.0x): Tipo5\n')
+    # when
+    matchup_output = pokemon_matchup_mock._build_matchup_output()
+    # then
+    assert matchup_output == expected_output
+
+
+def test_list_to_comma_upper_case_string():
+    # given
+    from src.ginger_donkey.entity import _list_to_comma_upper_case_string
+    # when
+    output = _list_to_comma_upper_case_string(['ab', 'cd'])
+    # then
+    assert output == 'Ab, Cd'
+

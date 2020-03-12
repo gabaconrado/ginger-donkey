@@ -1,3 +1,8 @@
+def _list_to_comma_upper_case_string(input_list):
+    return ('{}, ' * len(input_list)).format(
+        *[f'{x.capitalize()}' for x in input_list]
+    )[:-2]
+
 class PokemonType():
 
     def __init__(self, name, weaknesses=[]):
@@ -32,3 +37,40 @@ class PokemonType():
                 )
                 poke_types.append(poke_type)
         return poke_types
+
+
+class PokemonMatchup():
+
+    OUTPUT_FORMAT = ('Pokemon Matchup ({types}):\n'
+                     '\tSuper effective (2.0x): {super_effectives}\n'
+                     '\tUltra effective (4.0x): {ultra_effectives}\n'
+                     '\tNot effective   (0.5x): {not_effectives}\n'
+                     '\tImmune          (0.0x): {immunes}\n')
+
+    def __init__(self, types):
+        self.types = types.copy()
+        self.super_effectives = []
+        self.ultra_effectives = []
+        self.not_effectives = []
+        self.immunes = []
+
+
+
+    def _build_matchup_output(self):
+        return PokemonMatchup.OUTPUT_FORMAT.format(
+            types=_list_to_comma_upper_case_string(
+                [str(t) for t in self.types]
+            ),
+            super_effectives=_list_to_comma_upper_case_string(
+                self.super_effectives
+            ),
+            ultra_effectives=_list_to_comma_upper_case_string(
+                self.ultra_effectives
+            ),
+            not_effectives=_list_to_comma_upper_case_string(
+                self.not_effectives
+            ),
+            immunes=_list_to_comma_upper_case_string(
+                self.immunes
+            )
+        )
