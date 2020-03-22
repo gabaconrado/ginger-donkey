@@ -1,8 +1,12 @@
 class PokemonType():
 
-    def __init__(self, name, weaknesses=[]):
+    def __init__(
+        self, name, weaknesses=[], strengths=[], immunities=[]
+    ):
         self.name = name
         self.weaknesses = weaknesses.copy()
+        self.strengths = strengths.copy()
+        self.immunities = immunities.copy()
 
     def __str__(self):
         return self.name
@@ -10,7 +14,9 @@ class PokemonType():
     def __eq__(self, other):
         return all([
             self.name == other.name,
-            self.weaknesses == other.weaknesses
+            self.weaknesses == other.weaknesses,
+            self.strengths == other.strengths,
+            self.immunities == other.immunities
         ])
 
     @classmethod
@@ -24,11 +30,21 @@ class PokemonType():
         with open(config_path, 'r') as config_file:
             lines = config_file.readlines()
             for line in lines:
-                tokens = line.split('|')                
+                tokens = line.split('|')
+                tokens = list(map(str.rstrip, tokens))
                 poke_type = PokemonType(
                     name=tokens[0],
                     weaknesses=[
-                        t.rstrip() for t in tokens[1].split(',')
+                        t for t in tokens[1].split(',')
+                        if tokens[1]
+                    ],
+                    strengths=[
+                        t for t in tokens[2].split(',')
+                        if tokens[2]
+                    ],
+                    immunities=[
+                        t for t in tokens[3].split(',')
+                        if tokens[3]
                     ]
                 )
                 poke_types.append(poke_type)

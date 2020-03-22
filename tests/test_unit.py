@@ -81,11 +81,22 @@ def test_setup_all_types(read_config_file_mock):
     from src.ginger_donkey.entity import PokemonType
     # when
     all_types = PokemonType.setup_all_types()
-    assert all_types == [
-        PokemonType('normal', ['fighting']),
-        PokemonType('electric', ['ground']),
-        PokemonType('fairy', ['poison', 'steel']),
-    ]
+    assert all_types[0] == PokemonType(
+            name='normal',
+            weaknesses=['fighting'],
+            immunities=['ghost']
+    )
+    assert all_types[1] == PokemonType(
+            name='electric',
+            weaknesses=['ground'],
+            strengths=['flying','steel','electric']
+    )
+    assert all_types[2] == PokemonType(
+            name='fairy',
+            weaknesses=['poison', 'steel'],
+            strengths=['fighting', 'bug', 'dark'], 
+            immunities=['dragon']
+    )
 
 
 def test_build_matchup_output(pokemon_matchup_already_setup):
