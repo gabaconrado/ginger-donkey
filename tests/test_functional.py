@@ -6,29 +6,32 @@ OUTPUTS = {
     'electric': ('Pokemon Matchup (Electric):\n'
                  '\tSuper effective (2.0x): Ground\n'
                  '\tUltra effective (4.0x): \n'
-                 '\tNot effective   (0.5x): \n'
+                 '\tNot effective   (0.5x): Electric, Flying, Steel\n'
                  '\tImmune          (0.0x): \n\n'),
     'fairy dragon': ('Pokemon Matchup (Dragon, Fairy):\n'
-                     '\tSuper effective (2.0x): Dragon, Fairy, Ice, '
+                     '\tSuper effective (2.0x): Fairy, Ice, '
                                                'Poison, Steel\n'
                      '\tUltra effective (4.0x): \n'
-                     '\tNot effective   (0.5x): \n'
-                     '\tImmune          (0.0x): \n\n'),
+                     '\tNot effective   (0.5x): Bug, Dark, Electric, '
+                                               'Fighting, Fire, '
+                                               'Grass, Water\n'
+                     '\tImmune          (0.0x): Dragon\n\n'),
     'water': ('Pokemon Matchup (Water):\n'
               '\tSuper effective (2.0x): Electric, Grass\n'
               '\tUltra effective (4.0x): \n'
-              '\tNot effective   (0.5x): \n'
+              '\tNot effective   (0.5x): Fire, Ice, Steel, Water\n'
               '\tImmune          (0.0x): \n\n'),
     'dark': ('Pokemon Matchup (Dark):\n'
              '\tSuper effective (2.0x): Bug, Fairy, Fighting\n'
              '\tUltra effective (4.0x): \n'
-             '\tNot effective   (0.5x): \n'
-             '\tImmune          (0.0x): \n\n'),
+             '\tNot effective   (0.5x): Dark, Ghost\n'
+             '\tImmune          (0.0x): Psychic\n\n'),
     'water flying': ('Pokemon Matchup (Flying, Water):\n'
-             '\tSuper effective (2.0x): Grass, Ice, Rock\n'
+             '\tSuper effective (2.0x): Rock\n'
              '\tUltra effective (4.0x): Electric\n'
-             '\tNot effective   (0.5x): \n'
-             '\tImmune          (0.0x): \n\n'),
+             '\tNot effective   (0.5x): Bug, Fighting, Fire, Steel, '
+                                       'Water\n'
+             '\tImmune          (0.0x): Ground\n\n'),
 }
 
 @pytest.mark.parametrize(

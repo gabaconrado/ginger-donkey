@@ -122,35 +122,49 @@ def test_list_to_comma_upper_case_string():
 
 
 @pytest.mark.parametrize(
-    'weaknesses, expected',
+    'weaknesses, strengths, immunities, expected',
     [
         (
             [['tipo3', 'tipo4'], ['tipo4', 'tipo5']],
-            ({'tipo3', 'tipo5'}, {'tipo4'})
+            [['tipo6'], ['tipo7']],
+            [['tipo8'], []],
+            ({'tipo3', 'tipo5'}, {'tipo4'}, {'tipo6', 'tipo7'}, {'tipo8'})
         ),
         (
             [['tipo1']],
-            ({'tipo1'}, set())
+            [['tipo1']],
+            [[]],
+            (set(), set(), set(), set())
         ),
         (
             [['tipo1'], ['tipo1']],
-            (set(), {'tipo1'})
+            [[], []],
+            [['tipo1'], []],
+            (set(), set(), set(), {'tipo1'})
         )
     ],
     ids = [
-        'both',
-        'only super effective',
-        'only ultra effective'
+        'complete',
+        'super effective + not effective',
+        'ultra effective + immune'
     ]
 )
-def test_evaluate_matchup(weaknesses, expected):
+def test_evaluate_matchup(weaknesses, strengths, immunities, expected):
     # given
     from src.ginger_donkey.entity import PokemonMatchup, PokemonType
-    matchup = PokemonMatchup([
-        PokemonType('name', t)
-        for t in weaknesses
+    matchup = PokemonMatchup([        
+        PokemonType(
+            name='name',
+            weaknesses=w,
+            strengths=s,
+            immunities=i
+        )
+        for w,s,i in zip(weaknesses, strengths, immunities)
     ])
     assert (
-        (matchup.super_effectives, matchup.ultra_effectives) == 
+        (matchup.super_effectives, 
+         matchup.ultra_effectives,
+         matchup.not_effectives,
+         matchup.immunes) == 
         expected
     )

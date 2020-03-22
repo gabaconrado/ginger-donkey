@@ -61,9 +61,11 @@ class PokemonMatchup():
 
     def __init__(self, types):
         self.types = types.copy()
-        self.super_effectives, self.ultra_effectives = self._evaluate_matchup()        
-        self.not_effectives = []
-        self.immunes = []
+        (self.super_effectives, 
+         self.ultra_effectives,
+         self.not_effectives,
+         self.immunes) = self._evaluate_matchup()
+         
 
     def __str__(self):
         return self._build_matchup_output()
@@ -83,9 +85,47 @@ class PokemonMatchup():
                 if len(self.types) > 1
                 else set()
             )
-        ultra_effectives = _evaluate_ultra_effectives()
-        super_effectives = _evaluate_super_effectives() - ultra_effectives
-        return (super_effectives, ultra_effectives)
+        def _evaluate_not_effectives():
+            return set.union(*(
+                set(t.strengths)
+                for t in self.types
+            ))
+        def _evaluate_immunities():
+            return set.union(*(
+                set(t.immunities)
+                for t in self.types
+            ))                
+
+        immunes = _evaluate_immunities()
+        not_effectives = (
+            _evaluate_not_effectives() -
+            immunes
+        )
+        ultra_effectives = (
+            _evaluate_ultra_effectives() -
+            immunes
+        )        
+        super_effectives = (
+            _evaluate_super_effectives() - 
+            immunes -
+            ultra_effectives
+        )
+        ultra_and_not = set.intersection(ultra_effectives, not_effectives)
+        super_and_not = set.intersection(super_effectives, not_effectives)
+        if ultra_and_not:
+            ultra_effectives -= ultra_and_not
+            not_effectives -= ultra_and_not
+            super_effectives += ultra_and_not
+        if super_and_not:
+            super_effectives -= super_and_not
+            not_effectives -= super_and_not        
+
+        return (
+            super_effectives,
+            ultra_effectives,
+            not_effectives,
+            immunes
+    )
             
 
     def _build_matchup_output(self):
