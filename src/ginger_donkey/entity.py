@@ -1,8 +1,3 @@
-def _list_to_comma_upper_case_string(input_list):
-    return ('{}, ' * len(input_list)).format(
-        *[f'{x.capitalize()}' for x in input_list]
-    )[:-2]
-
 class PokemonType():
 
     def __init__(self, name, weaknesses=[]):
@@ -49,28 +44,49 @@ class PokemonMatchup():
 
     def __init__(self, types):
         self.types = types.copy()
-        self.super_effectives = []
-        self.ultra_effectives = []
+        self.super_effectives, self.ultra_effectives = self._evaluate_matchup()        
         self.not_effectives = []
         self.immunes = []
 
+    def __str__(self):
+        return self._build_matchup_output()
 
+    def _evaluate_matchup(self):        
+        def _evaluate_super_effectives():
+            return set.union(*(
+                set(t.weaknesses)
+                for t in self.types
+            ))
+        def _evaluate_ultra_effectives():
+            return (
+                set.intersection(*(
+                    set(t.weaknesses) 
+                    for t in self.types                
+                ))
+                if len(self.types) > 1
+                else set()
+            )
+        ultra_effectives = _evaluate_ultra_effectives()
+        super_effectives = _evaluate_super_effectives() - ultra_effectives
+        return (super_effectives, ultra_effectives)
+            
 
     def _build_matchup_output(self):
+        from .util import list_to_comma_upper_case_string
         return PokemonMatchup.OUTPUT_FORMAT.format(
-            types=_list_to_comma_upper_case_string(
+            types=list_to_comma_upper_case_string(
                 [str(t) for t in self.types]
             ),
-            super_effectives=_list_to_comma_upper_case_string(
+            super_effectives=list_to_comma_upper_case_string(
                 self.super_effectives
             ),
-            ultra_effectives=_list_to_comma_upper_case_string(
+            ultra_effectives=list_to_comma_upper_case_string(
                 self.ultra_effectives
             ),
-            not_effectives=_list_to_comma_upper_case_string(
+            not_effectives=list_to_comma_upper_case_string(
                 self.not_effectives
             ),
-            immunes=_list_to_comma_upper_case_string(
+            immunes=list_to_comma_upper_case_string(
                 self.immunes
             )
         )

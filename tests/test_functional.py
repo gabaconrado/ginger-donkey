@@ -3,27 +3,32 @@ import pytest
 from subprocess import run
 
 OUTPUTS = {
-    'electric': ('Pokemon Matchup (Electric):'
-                 '\tSuper effective (2.0x): Ground, Rock\n'
-                 '\tUltra effective (4.0x):\n'
-                 '\tNot effective   (0.5x):\n'
-                 '\tImmune          (0.0x):\n'),
-    'fairy dragon': ('Pokemon Matchup (Fairy, Dragon):'
-                     '\tSuper effective (2.0x): Ice, Dragon, Fairy, '
+    'electric': ('Pokemon Matchup (Electric):\n'
+                 '\tSuper effective (2.0x): Ground\n'
+                 '\tUltra effective (4.0x): \n'
+                 '\tNot effective   (0.5x): \n'
+                 '\tImmune          (0.0x): \n\n'),
+    'fairy dragon': ('Pokemon Matchup (Dragon, Fairy):\n'
+                     '\tSuper effective (2.0x): Dragon, Fairy, Ice, '
                                                'Poison, Steel\n'
-                     '\tUltra effective (4.0x):\n'
-                     '\tNot effective   (0.5x):\n'
-                     '\tImmune          (0.0x):\n'),
-    'water': ('Pokemon Matchup (Water):'
+                     '\tUltra effective (4.0x): \n'
+                     '\tNot effective   (0.5x): \n'
+                     '\tImmune          (0.0x): \n\n'),
+    'water': ('Pokemon Matchup (Water):\n'
               '\tSuper effective (2.0x): Electric, Grass\n'
-              '\tUltra effective (4.0x):\n'
-              '\tNot effective   (0.5x):\n'
-              '\tImmune          (0.0x):\n'),
-    'dark': ('Pokemon Matchup (Dark):'
-             '\tSuper effective (2.0x): Fighting, Bug, Fairy\n'
-             '\tUltra effective (4.0x):\n'
-             '\tNot effective   (0.5x):\n'
-             '\tImmune          (0.0x):\n'),
+              '\tUltra effective (4.0x): \n'
+              '\tNot effective   (0.5x): \n'
+              '\tImmune          (0.0x): \n\n'),
+    'dark': ('Pokemon Matchup (Dark):\n'
+             '\tSuper effective (2.0x): Bug, Fairy, Fighting\n'
+             '\tUltra effective (4.0x): \n'
+             '\tNot effective   (0.5x): \n'
+             '\tImmune          (0.0x): \n\n'),
+    'water flying': ('Pokemon Matchup (Flying, Water):\n'
+             '\tSuper effective (2.0x): Grass, Ice, Rock\n'
+             '\tUltra effective (4.0x): Electric\n'
+             '\tNot effective   (0.5x): \n'
+             '\tImmune          (0.0x): \n\n'),
 }
 
 @pytest.mark.parametrize(
@@ -33,10 +38,11 @@ OUTPUTS = {
         for _input, _output in OUTPUTS.items()
     ],
     ids = [
-        'Electric',
-        'Fairy + Dragon',
-        'Water',
-        'Dark'
+        'electric',
+        'fairy + dragon',
+        'water',
+        'dark',
+        'water + flying'
     ]
 )
 def test_counter_type(type_input, expected):
@@ -53,6 +59,6 @@ def test_counter_type(type_input, expected):
     # He will receive the types that are strong against
     # electric.
     assert proc_call.returncode == 0
-    assert proc_call.stdout.rstrip() == expected
+    assert proc_call.stdout.decode('utf-8') == expected
     # All good! He won!
     # Thanks ginger-donkey!
