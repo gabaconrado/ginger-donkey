@@ -45,16 +45,35 @@ def pokemon_matchup_already_setup():
     yield p
 
 
-# def test_entrypoint(
-#     sys_argv_mock,
-#     print_mock
-# ):
-#     # given
-#     from src.ginger_donkey.poke_counter import entrypoint
-#     # when
-#     entrypoint()
-#     # then
-#     print_mock.assert_called_once_with(find_best_type_mock.return_value)
+@pytest.fixture
+def pokemon_type_mock(mocker):
+    yield mocker.patch(
+        'src.ginger_donkey.poke_counter.PokemonType',
+        autospec=True
+    )
+
+@pytest.fixture
+def pokemon_matchup_mock(mocker):
+    yield mocker.patch(
+        'src.ginger_donkey.poke_counter.PokemonMatchup',
+        autospec=True
+    )
+
+
+def test_entrypoint(
+    sys_argv_mock,
+    pokemon_type_mock,
+    pokemon_matchup_mock,
+    print_mock
+):
+    # given
+    from src.ginger_donkey.poke_counter import entrypoint
+    # when
+    entrypoint()
+    # then
+    pokemon_type_mock.setup_all_types.assert_called_once
+    pokemon_matchup_mock.assert_called_once_with([])
+    print_mock.assert_called_once_with(pokemon_matchup_mock.return_value)
 
 
 def test_setup_all_types(read_config_file_mock):
