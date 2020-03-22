@@ -26,9 +26,9 @@ def all_types_mock(mocker):
 @pytest.fixture()
 def read_config_file_mock(mocker):
     data = (
-        'electric,rock,ground\n'
-        'water,electric,grass\n'
-        'dragon,dragon,ice\n'
+        'normal|fighting||ghost\n'
+        'electric|ground|flying,steel,electric|\n'
+        'fairy|poison,steel|fighting,bug,dark|dragon\n'
     )
     read_m = mocker.patch('builtins.open', mocker.mock_open(read_data=data))
     yield read_m
@@ -82,9 +82,9 @@ def test_setup_all_types(read_config_file_mock):
     # when
     all_types = PokemonType.setup_all_types()
     assert all_types == [
-        PokemonType('electric', ['rock', 'ground']),
-        PokemonType('water', ['electric', 'grass']),
-        PokemonType('dragon', ['dragon', 'ice']),
+        PokemonType('normal', ['fighting']),
+        PokemonType('electric', ['ground']),
+        PokemonType('fairy', ['poison', 'steel']),
     ]
 
 

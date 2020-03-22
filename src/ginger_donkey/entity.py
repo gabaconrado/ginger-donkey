@@ -24,11 +24,12 @@ class PokemonType():
         with open(config_path, 'r') as config_file:
             lines = config_file.readlines()
             for line in lines:
-                tokens = line.split(',')
-                tokens = list(map(str.rstrip, tokens))
+                tokens = line.split('|')                
                 poke_type = PokemonType(
-                    tokens.pop(0),
-                    weaknesses=tokens
+                    name=tokens[0],
+                    weaknesses=[
+                        t.rstrip() for t in tokens[1].split(',')
+                    ]
                 )
                 poke_types.append(poke_type)
         return poke_types
