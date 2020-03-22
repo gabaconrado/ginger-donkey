@@ -2,11 +2,13 @@
 
 ## Description
 
-The lazy Pokémon players utility, it shows the weaknesses of a given type
+The lazy Pokémon players utility, it shows the matchup information
+for given type(s)
 
 ## Usage
 
-Simply invoke the tool with the types as parameters:
+Simply invoke the tool with the types as parameters in lower case
+and separated by spaces:
 
 ```bash
 $ cd src/ginger_donkey
